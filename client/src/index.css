@@ -1,0 +1,194 @@
+@import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+    --color-primary: #34C759;
+    --color-primary-dull: #30B350;
+    --color-primary-light: #E8F9EE;
+    --color-ios-gray: #F2F2F7;
+    --color-ios-separator: #C6C6C8;
+    --color-ios-label: #3C3C43;
+    --color-ios-secondary: #8E8E93;
+    --color-ios-tertiary: #AEAEB2;
+    --color-ios-quaternary: #C7C7CC;
+    --color-ios-bg: #FFFFFF;
+    --color-ios-elevated: #F9F9F9;
+}
+
+* {
+    font-family: "Outfit", -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+}
+
+html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    background: #FFFFFF;
+    overscroll-behavior-y: none;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* iOS-style animations */
+@keyframes ios-slide-up {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes ios-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes ios-scale-in {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes ios-bounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes ios-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.animate-ios-slide-up {
+    animation: ios-slide-up 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.animate-ios-fade-in {
+    animation: ios-fade-in 0.3s ease-out forwards;
+}
+
+.animate-ios-scale-in {
+    animation: ios-scale-in 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Glass morphism utility */
+.glass {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+}
+
+.glass-dark {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+}
+
+/* iOS-style shadow system */
+.ios-shadow-sm {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.ios-shadow-md {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.ios-shadow-lg {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12), 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+.ios-shadow-xl {
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* iOS-style card */
+.ios-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+/* iOS-style button press effect */
+.ios-press {
+    transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.2s ease;
+}
+.ios-press:active {
+    transform: scale(0.97);
+}
+
+/* iOS toggle switch */
+.ios-toggle {
+    position: relative;
+    width: 51px;
+    height: 31px;
+    border-radius: 31px;
+    background: #E9E9EA;
+    transition: background 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: pointer;
+}
+.ios-toggle.active {
+    background: #34C759;
+}
+.ios-toggle::after {
+    content: '';
+    position: absolute;
+    width: 27px;
+    height: 27px;
+    border-radius: 50%;
+    background: white;
+    top: 2px;
+    left: 2px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.ios-toggle.active::after {
+    transform: translateX(20px);
+}
+
+/* Gradient text */
+.gradient-text {
+    background: linear-gradient(135deg, #34C759 0%, #30D158 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Safe area padding for iOS */
+.safe-bottom {
+    padding-bottom: max(env(safe-area-inset-bottom, 0px), 20px);
+}
+
+.safe-top {
+    padding-top: max(env(safe-area-inset-top, 0px), 0px);
+}
+
+/* Smooth scrollbar for desktop */
+@media (min-width: 768px) {
+    ::-webkit-scrollbar {
+        width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #C7C7CC;
+        border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #8E8E93;
+    }
+}
