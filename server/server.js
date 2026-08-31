@@ -15,14 +15,16 @@ import { stripeWebhooks } from "./controllers/orderContoller.js";
 const app = express();
 const port = process.env.PORT || 4000;
 
-let isConnected = false;
+let connectPromise = null;
 
 async function ensureConnection() {
-  if (!isConnected) {
-    await connectDb();
-    await connectCloudinary();
-    isConnected = true;
+  if (!connectPromise) {
+    connectPromise = (async () => {
+      await connectDb();
+      await connectCloudinary();
+    })();
   }
+  await connectPromise;
 }
 
 // Middlewere configration
