@@ -15,10 +15,15 @@ import { stripeWebhooks } from "./controllers/orderContoller.js";
 const app = express();
 const port = process.env.PORT || 4000;
 
-await connectDb();
-await connectCloudinary();
+let isConnected = false;
 
-// const allowedOrigins = ["http://localhost:5173"];
+async function ensureConnection() {
+  if (!isConnected) {
+    await connectDb();
+    await connectCloudinary();
+    isConnected = true;
+  }
+}
 
 // Middlewere configration
 app.post("/stripe", express.raw({ type: "application/json" }), stripeWebhooks);
@@ -26,12 +31,31 @@ app.post("/stripe", express.raw({ type: "application/json" }), stripeWebhooks);
 app.use(express.json());
 app.use(cookieParser());
 
+// Allow requests from the configured client origin(s).
+// CLIENT_URL may contain a comma-separated list, e.g.
+// "http://localhost:5173,http://192.168.1.10:5173"
+const clientUrls = (process.env.CLIENT_URL || "http://localhost:5173")
+  .split(",")
+  .map((url) => url.trim())
+  .filter(Boolean);
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin(requestOrigin, callback) {
+      // Allow non-browser clients (Postman, cURL) and same-origin requests.
+      if (!requestOrigin) {
+        return callback(null, true);
+      }
+      if (clientUrls.indexOf(requestOrigin) !== -1) {
+        return callback(null, true);
+      }
+      return callback(new Error("Not allowed by CORS"));
+    },
     credentials: true,
-  }),
+  })
 );
+
+app.use(ensureConnection);
 
 app.use("/api/user", userRouter);
 app.use("/api/seller", sellerRouter);
@@ -44,6 +68,10 @@ app.get("/", (req, res) => {
   res.send("home route");
 });
 
-app.listen(port, () => {
-  console.log(`server runining on http://localhost:${port}`);
-});
+if (process.env.NODE_ENV !== "production") {
+  app.listen(port, () => {
+    console.log(`server runining on http://localhost:${port}`);
+  });
+}
+
+export default app;

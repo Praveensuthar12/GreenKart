@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { cookieOptionsWithAge, cookieOptions } from "../configs/cookieConfig.js";
 
 export const sellerLogin = async (req, res) => {
   try {
@@ -11,18 +12,18 @@ export const sellerLogin = async (req, res) => {
         expiresIn: "7d",
       });
 
-      res.cookie("sellerToken", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-      });
+      res.cookie("sellerToken", token, cookieOptionsWithAge());
 
       return res.json({
         success: true,
-        message: "Logout In",
+        message: "Logged In",
       });
     }
+
+    return res.json({
+      success: false,
+      message: "Invalid Credentials",
+    });
   } catch (error) {
     res.json({
       success: false,
@@ -48,11 +49,7 @@ export const isSellerAuth = async (req, res) => {
 
 export const sellerLogout = async (req, res) => {
   try {
-    res.clearCookie("sellerToken", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
-    });
+    res.clearCookie("sellerToken", cookieOptions);
 
     return res.json({
       success: true,

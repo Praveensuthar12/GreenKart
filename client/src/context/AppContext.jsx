@@ -7,7 +7,9 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true;
 
-axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
+axios.defaults.baseURL =
+  import.meta.env.VITE_BACKEND_URL ||
+  `${window.location.protocol}//${window.location.hostname}:4000`;
 
 export const AppContext = createContext();
 
@@ -21,7 +23,7 @@ export const AppContextProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
 
   const [cartItems, setCartItems] = useState({});
-  const [searchQuery, setSearchQuery] = useState({});
+  const [searchQuery, setSearchQuery] = useState("");
 
   const fetchSeller = async () => {
     try {
@@ -123,7 +125,7 @@ export const AppContextProvider = ({ children }) => {
     let totalAmount = 0;
     for (const items in cartItems) {
       let itemInfo = products.find((product) => product._id === items);
-      if (cartItems[items] > 0) {
+      if (itemInfo && cartItems[items] > 0) {
         totalAmount += itemInfo.offerPrice * cartItems[items];
       }
     }
