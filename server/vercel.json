@@ -8,11 +8,15 @@
   ],
   "routes": [
     {
+      "src": "/api/(.*)",
+      "dest": "/server.js"
+    },
+    {
       "src": "/stripe",
       "dest": "/server.js"
     },
     {
-      "src": "/api/(.*)",
+      "src": "/(.*)",
       "dest": "/server.js"
     }
   ]

@@ -17,14 +17,20 @@ const port = process.env.PORT || 4000;
 
 let connectPromise = null;
 
-async function ensureConnection() {
-  if (!connectPromise) {
-    connectPromise = (async () => {
-      await connectDb();
-      await connectCloudinary();
-    })();
+async function ensureConnection(req, res, next) {
+  try {
+    if (!connectPromise) {
+      connectPromise = (async () => {
+        await connectDb();
+        await connectCloudinary();
+      })();
+    }
+    await connectPromise;
+    next();
+  } catch (error) {
+    connectPromise = null;
+    res.status(503).json({ success: false, message: "Database connection failed" });
   }
-  await connectPromise;
 }
 
 // Middlewere configration
