@@ -20,7 +20,7 @@ https://github.com/Praveensuthar12/GreenKart
 ## 📸 Screenshots
 
 > <img width="1788" height="825" alt="Screenshot 2026-09-02 095920" src="https://github.com/user-attachments/assets/592aee72-6a81-4971-b825-41bd9de94dfb" />
-br/>
+
 <img width="1843" height="902" alt="Screenshot 2026-09-02 095903" src="https://github.com/user-attachments/assets/85b6306f-bb4f-4067-9eb6-2bdfd07f8820" />
 
 # ✨ Features
